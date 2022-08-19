@@ -1,6 +1,19 @@
-
+import friends from '../data/friends.json';
+import { useState } from "react";
 
 function App() {
+  // variables de estado//
+  const [data, setData] = useState(friends);
+
+  //render//
+  const htmlData = data.map((friends) => {
+    return (
+      <li className='phrase_person'>
+        <p className='phrase'>{friends.quote} </p>
+        <p className='person'>{friends.character} </p>
+      </li>
+    )
+  });
   return (
     <div className="page">
       <form action="">
@@ -19,7 +32,7 @@ function App() {
           <option>Rachel</option>
         </select>
       </form>
-      <ul></ul>
+      <ul>{htmlData}</ul>
       <form action="">
         <p> Añadir nueva frase </p>
         frase
