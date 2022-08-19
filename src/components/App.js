@@ -4,8 +4,25 @@ import { useState } from "react";
 function App() {
   // variables de estado//
   const [data, setData] = useState(friends);
+  const [searchPhrase, setSearchPhrase] = useState();
+  const [newPhrase, setNewPhrase] = useState({
+    quote: "",
+    character: ""
+  });
+
+
+  const handleSearchPhrase = (ev) => {
+    setSearchPhrase(ev.target.value);
+  }
+  const handleNewPhrase = (ev) => {
+    setNewPhrase({
+      ...newPhrase,
+      [ev.target.id]: ev.target.value
+    });
+  }
 
   //render//
+
   const htmlData = data.map((friends) => {
     return (
       <li className='phrase_person'>
@@ -18,7 +35,9 @@ function App() {
     <div className="page">
       <form action="">
         filtrar por frase
-        <input type="text" />
+        <input type="text"
+          value={searchPhrase}
+          onChange={handleSearchPhrase} />
       </form>
       <form action="">
         filtrar por personaje
@@ -39,12 +58,16 @@ function App() {
         <input
           type="text"
           id="phrase"
+          value={newPhrase.quote}
+          onChange={handleNewPhrase}
         />
         <br />
         personaje
         <input
           type="text"
           id="person"
+          value={newPhrase.character}
+          onChange={handleNewPhrase}
         />
         <br />
         <button>Añadir nueva frase:</button>
