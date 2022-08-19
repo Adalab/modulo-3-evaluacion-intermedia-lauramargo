@@ -43,6 +43,9 @@ function App() {
         </li>
       )
     });
+  const handleChange = (ev) => {
+    this.setState({ selectedValue: ev.target.value })
+  }
   return (
     <div className="page">
       <form action="">
@@ -53,7 +56,7 @@ function App() {
       </form>
       <form action="">
         filtrar por personaje
-        <select>
+        <select onChange={(ev) => handleChange(ev)}>
           <option>todos</option>
           <option>Ross</option>
           <option>Monica</option>
