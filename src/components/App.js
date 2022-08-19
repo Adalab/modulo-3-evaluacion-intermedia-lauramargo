@@ -4,7 +4,7 @@ import { useState } from "react";
 function App() {
   // variables de estado//
   const [data, setData] = useState(friends);
-  const [searchPhrase, setSearchPhrase] = useState();
+  const [searchPhrase, setSearchPhrase] = useState("");
   const [newPhrase, setNewPhrase] = useState({
     quote: "",
     character: ""
@@ -20,17 +20,25 @@ function App() {
       [ev.target.id]: ev.target.value
     });
   }
+  const handleClick = (ev) => {
+    ev.preventDefault();
+    setData([...data, newPhrase])
+  }
 
   //render//
 
-  const htmlData = data.map((friends) => {
-    return (
-      <li className='phrase_person'>
-        <p className='phrase'>{friends.quote} </p>
-        <p className='person'>{friends.character} </p>
-      </li>
-    )
-  });
+  const htmlData = data
+    .filter((friends) => {
+      return friends.character.toLowerCase().includes(searchPhrase.toLowerCase());
+    })
+    .map((friends, index) => {
+      return (
+        <li className='phrase_person' key={index}>
+          <p className='phrase'>{friends.quote} </p>
+          <p className='person'>{friends.character} </p>
+        </li>
+      )
+    });
   return (
     <div className="page">
       <form action="">
@@ -57,7 +65,7 @@ function App() {
         frase
         <input
           type="text"
-          id="phrase"
+          id="quote"
           value={newPhrase.quote}
           onChange={handleNewPhrase}
         />
@@ -65,12 +73,14 @@ function App() {
         personaje
         <input
           type="text"
-          id="person"
+          id="character"
           value={newPhrase.character}
           onChange={handleNewPhrase}
         />
         <br />
-        <button>Añadir nueva frase:</button>
+        <button
+          onClick={handleClick}
+        >Añadir nueva frase:</button>
       </form>
 
     </div>
