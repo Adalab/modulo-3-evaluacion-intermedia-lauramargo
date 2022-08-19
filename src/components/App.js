@@ -23,6 +23,10 @@ function App() {
   const handleClick = (ev) => {
     ev.preventDefault();
     setData([...data, newPhrase])
+    setNewPhrase({
+      quote: "",
+      character: ""
+    });
   }
 
   //render//
