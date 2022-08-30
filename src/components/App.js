@@ -1,5 +1,6 @@
 import Api from '../services/fetch.js';
 import { useState, useEffect } from "react";
+import '../styles/App.scss';
 
 
 const App = () => {
@@ -53,62 +54,73 @@ const App = () => {
     })
     .map((item, index) => {
       return (
-        <li className='phrase_person' key={index}>
-          <p className='phrase'>{item.quote} </p>
-          <p className='person'>{item.character} </p>
+        <li className='ul__person' key={index}>
+          <p className='ul__person--phrase'>{item.quote} </p>
+          <p className='ul__person--person'>{item.character} </p>
         </li>
       );
     });
 
   return (
     <div className="page">
-      <form action=""
-        htmlFor="character">
-        filtrar por frase
-        <input type="text"
-          name="quote"
-          id="quote"
-          value={searchPhrase}
-          onChange={handleSearchPhrase} />
+      <header>
+        <h1>Frases de Friends</h1>
+      </header>
+      <form className='filters'>
+
+        <label className='filters__byPhrase' htmlFor="character">
+          filtrar por frase
+          <input
+            type="text"
+            name="quote"
+            id="quote"
+            value={searchPhrase}
+            onChange={handleSearchPhrase} />
+
+        </label>
+        <label className="character" >
+          filtrar por personaje
+          <select className='filters__character'
+            onChange={handleFilterCharacter}
+            value={filterC}>
+            <option value="all">Todos</option>
+            <option value="Ross">Ross</option>
+            <option value="Monica">Monica</option>
+            <option value="Joey">Joey</option>
+            <option value="Phoebe">Phoebe</option>
+            <option value="Chandler">Chandler</option>
+            <option value="Rachel">Rachel</option>
+          </select>
+        </label>
       </form>
-      <form action="">
-        filtrar por personaje
-        <select
-          onChange={handleFilterCharacter}
-          value={filterC}>
-          <option value="all">Todos</option>
-          <option value="Ross">Ross</option>
-          <option value="Monica">Monica</option>
-          <option value="Joey">Joey</option>
-          <option value="Phoebe">Phoebe</option>
-          <option value="Chandler">Chandler</option>
-          <option value="Rachel">Rachel</option>
-        </select>
-      </form>
-      <ul>{htmlData}</ul>
-      <form action="">
-        <p> Añadir nueva frase </p>
+
+
+      <ul className='ul'>{htmlData}</ul>
+      <form className='new'>
+        <h2 className='new__phrase'> Añadir nueva frase </h2>
         frase
-        <input
-          type="text"
-          id="quote"
-          value={newPhrase.quote}
-          onChange={handleNewPhrase}
-        />
-        <br />
-        personaje
-        <input
-          type="text"
-          id="character"
-          value={newPhrase.character}
-          onChange={handleNewPhrase}
-        />
-        <br />
-        <button
+        <label htmlFor="quote">
+          <input
+            type="text"
+            id="quote"
+            value={newPhrase.quote}
+            onChange={handleNewPhrase}
+          />
+        </label>
+        <label htmlFor="character">
+          <span>personaje</span>
+          <input
+            type="text"
+            id="character"
+            value={newPhrase.character}
+            onChange={handleNewPhrase}
+          />
+        </label>
+        <button className="button"
           onClick={handleClick}
         >Añadir nueva frase:</button>
       </form>
-    </div>
+    </div >
   );
 };
 
