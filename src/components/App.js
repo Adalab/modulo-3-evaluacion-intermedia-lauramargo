@@ -1,69 +1,88 @@
-import friends from '../data/friends.json';
-import { useState } from "react";
+import Api from '../services/fetch.js';
+import { useState, useEffect } from "react";
 
-function App() {
+
+const App = () => {
   // variables de estado//
-  const [data, setData] = useState(friends);
-  const [searchPhrase, setSearchPhrase] = useState("");
+  const [data, setData] = useState([]);
   const [newPhrase, setNewPhrase] = useState({
     quote: "",
-    character: ""
+    character: "",
   });
+  const [filterC, setFilterC] = useState('all');
+  const [searchPhrase, setSearchPhrase] = useState("");
 
+  useEffect(() => {
+    Api().then((data) => {
+      setData(data);
+    });
+  }, []);
 
-  const handleSearchPhrase = (ev) => {
-    setSearchPhrase(ev.target.value);
-  }
   const handleNewPhrase = (ev) => {
     setNewPhrase({
       ...newPhrase,
-      [ev.target.id]: ev.target.value
+      [ev.target.id]: ev.target.value,
     });
-  }
+  };
+
+  const handleSearchPhrase = (ev) => {
+    setSearchPhrase(ev.target.value);
+  };
+  const handleFilterCharacter = (ev) => {
+    setFilterC(ev.target.value);
+  };
+
+
+
   const handleClick = (ev) => {
     ev.preventDefault();
-    setData([...data, newPhrase])
-    setNewPhrase({
-      quote: "",
-      character: ""
-    });
-  }
+    setData([...data, newPhrase]);
+  };
 
   //render//
 
   const htmlData = data
-    .filter((friends) => {
-      return friends.character.toLowerCase().includes(searchPhrase.toLowerCase());
+    .filter((item) => {
+      return item.quote.toLowerCase().includes(searchPhrase.toLowerCase());
     })
-    .map((friends, index) => {
+    .filter((item) => {
+      if (filterC === 'all') {
+        return true;
+      }
+      return item.character === filterC;
+    })
+    .map((item, index) => {
       return (
         <li className='phrase_person' key={index}>
-          <p className='phrase'>{friends.quote} </p>
-          <p className='person'>{friends.character} </p>
+          <p className='phrase'>{item.quote} </p>
+          <p className='person'>{item.character} </p>
         </li>
-      )
+      );
     });
-  const handleChange = (ev) => {
-    this.setState({ selectedValue: ev.target.value })
-  }
+
   return (
     <div className="page">
-      <form action="">
+      <form action=""
+        htmlFor="character">
         filtrar por frase
         <input type="text"
+          name="quote"
+          id="quote"
           value={searchPhrase}
           onChange={handleSearchPhrase} />
       </form>
       <form action="">
         filtrar por personaje
-        <select onChange={(ev) => handleChange(ev)}>
-          <option>todos</option>
-          <option>Ross</option>
-          <option>Monica</option>
-          <option>Joey</option>
-          <option>Phoebe</option>
-          <option>Chandler</option>
-          <option>Rachel</option>
+        <select
+          onChange={handleFilterCharacter}
+          value={filterC}>
+          <option value="all">Todos</option>
+          <option value="Ross">Ross</option>
+          <option value="Monica">Monica</option>
+          <option value="Joey">Joey</option>
+          <option value="Phoebe">Phoebe</option>
+          <option value="Chandler">Chandler</option>
+          <option value="Rachel">Rachel</option>
         </select>
       </form>
       <ul>{htmlData}</ul>
@@ -89,9 +108,9 @@ function App() {
           onClick={handleClick}
         >Añadir nueva frase:</button>
       </form>
-
     </div>
   );
-}
+};
+
 
 export default App;
